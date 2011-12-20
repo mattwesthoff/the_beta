@@ -7,7 +7,8 @@ from bottle import route, run, request, redirect
 
 @route('/')
 def index():
-	return "<a href='/gauth'>Sign in using google</a>"
+	return "<a href='/gauth'>Sign in using google</a><br/>\
+	<a href='/fbauth'>Sign in using facebook</a>"
 
 @route('/gauth')
 def google_auth():
@@ -17,7 +18,7 @@ def google_auth():
 def gauth_callback():
 	if request.query.code:
 		user_data = handle_callback(request.query.code, "http://localhost:8080/gauthcallback")
-		return "<img src='%s0'/>%s" % (user_data['image'], user_data['name'])
+		return "<img src='%s'/>%s" % (user_data['image'], user_data['name'])
 	else:
 		return "Nothin'"
 
@@ -28,7 +29,8 @@ def fb_auth():
 @route('/fbauthcallback')
 def fbauth_callback():
 	if request.query.code:
-		return fb_handle_callback(request.query.code, "http://localhost:8080/fbauthcallback")
+		user_data = fb_handle_callback(request.query.code, "http://localhost:8080/fbauthcallback")
+		return "<img src='%s'/>%s" % (user_data['image'], user_data['name'])
 	else:
 		return "Nothin'"
 
