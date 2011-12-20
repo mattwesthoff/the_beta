@@ -1,6 +1,9 @@
 from auth.google_oauth import get_authorize_url, handle_callback
 from bottle import route, run, request, redirect
 
+#https://github.com/iurisilvio/bottle-chat/blob/master/chat.py
+#http://devcenter.heroku.com/articles/python
+
 @route('/')
 def index():
 	return "<a href='/gauth'>Sign in using google</a>"
