@@ -26,12 +26,13 @@ def handle_callback(code, target_url):
 	r = requests.post(url, data=payload,headers=headers)
 	if r.status_code == 200:
 		token = simplejson.loads(r.content)['access_token']
-		d = requests.get("https://www.googleapis.com/plus/v1/people/me",
-			headers={"Authorization":("OAuth %s" % token)}) 
-		if d.status_code == 200:
-			data = simplejson.loads(d.content)
-			return dict(name=data['displayName'],image=data['image']['url'])
-		else:
-			return "Error getting api data"
 	else:
 		return "Error getting auth token"
+
+	d = requests.get("https://www.googleapis.com/plus/v1/people/me",
+		headers={"Authorization":("OAuth %s" % token)}) 
+	if d.status_code == 200:
+		data = simplejson.loads(d.content)
+		return dict(name=data['displayName'],image=data['image']['url'])
+	else:
+		return "Error getting api data"
