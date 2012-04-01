@@ -30,4 +30,3 @@ def fb_handle_callback(code, target_url):
 			return "Error getting data"
 	else:
 		return "Error getting auth token"
-
