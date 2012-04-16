@@ -1,5 +1,4 @@
-from auth.google_oauth import get_authorize_url, handle_callback
-from auth.fb_oauth import fb_get_authorize_url, fb_handle_callback
+from auth.oauth import google, facebook
 from bottle import route, run, request, redirect
 
 #https://github.com/iurisilvio/bottle-chat/blob/master/chat.py
@@ -12,24 +11,24 @@ def index():
 
 @route('/gauth')
 def google_auth():
-	redirect(get_authorize_url("http://localhost:8080/gauthcallback"))
+	redirect(google.get_authorize_url("http://localhost:8080/gauthcallback"))
 
 @route('/gauthcallback')
 def gauth_callback():
 	if request.query.code:
-		user_data = handle_callback(request.query.code, "http://localhost:8080/gauthcallback")
+		user_data = google.handle_callback(request.query.code, "http://localhost:8080/gauthcallback")
 		return "<img src='%s'/>%s" % (user_data['image'], user_data['name'])
 	else:
 		return "Nothin'"
 
 @route('/fbauth')
 def fb_auth():
-	redirect(fb_get_authorize_url("http://localhost:8080/fbauthcallback"))
+	redirect(facebook.get_fb_auth_url("http://localhost:8080/fbauthcallback"))
 
 @route('/fbauthcallback')
 def fbauth_callback():
 	if request.query.code:
-		user_data = fb_handle_callback(request.query.code, "http://localhost:8080/fbauthcallback")
+		user_data = facebook.get_fb_userdata(request.query.code, "http://localhost:8080/fbauthcallback")
 		return "<img src='%s'/>%s" % (user_data['image'], user_data['name'])
 	else:
 		return "Nothin'"
